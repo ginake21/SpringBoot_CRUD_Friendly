@@ -95,7 +95,7 @@
 					-->
 						<br />
 						<div>
-							<form id="idSearchForm" action="GetOneEnv" class="black">
+							<form id="idSearchForm" action="GetOrUpdateOneEnv" class="black">
 								查詢指定環境ID: <input type="text" name="envId"><input
 									type="submit">
 							</form>

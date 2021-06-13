@@ -108,7 +108,7 @@
 									<td>${env.telephone}</td>
 									<td>${env.address}</td>
 
-									<td><a href="GetOneEnv?envId=${env.envId}"><button>詳細資料</button></a></td>
+									<td><a href="GetOrUpdateOneEnv?envId=${env.envId}"><button>詳細資料</button></a></td>
 									<td><a href="DeleteFriendlyEnv?envId=${env.envId}"><button>刪除</button></a></td>
 
 								</tr>

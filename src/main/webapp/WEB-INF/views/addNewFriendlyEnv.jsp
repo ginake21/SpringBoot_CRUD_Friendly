@@ -41,8 +41,8 @@
 			<form:input type="text" path="address" size="38" />
 			<br>
 			
-			<form:input path="image" type="file"/>
-			<form:errors path="image" cssClass="error" />
+			<form:input path="friendlyEnvImage" type="file"/>
+			<form:errors path="friendlyEnvImage" cssClass="error" />
 			
 			<div>
 				<input type="submit" value="建立資料" />

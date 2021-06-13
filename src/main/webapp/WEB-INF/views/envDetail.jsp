@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <!-- 
 名字: Gina
 日期: 2021/05/01
@@ -67,10 +67,9 @@
 						<li class="menu-has-children"><a href="">會員制度</a>
 							<ul>
 								<li><a href="course-details.html">普通會員</a></li>
-								<li><a href="event-details.html">付費會員</a></li></li>
-					</ul>
-					</li>
-					<li><a href="contact.html">聯絡我們</a></li>
+								<li><a href="event-details.html">付費會員</a></li>
+							</ul></li>
+						<li><a href="contact.html">聯絡我們</a></li>
 					</ul>
 				</nav>
 				<!-- #nav-menu-container -->
@@ -102,31 +101,44 @@
 		<div class="row">
 			<div class="framefriendly black">
 				<div class="content">
-				<br>
-					<form action="UpdateFriendlyEnv?envId=${envDetail.envId}"
-						method="post">
+					<br>
+					<form:form method="post" id="addNewEnv" class="black" modelAttribute="friendlyEnvU" enctype="multipart/form-data">
 						<fieldset id="readOnly" disabled="disabled">
-							<label>所在城市:</label> <select id="city" name="city">
+							<label>所在城市:</label>
+							<form:select id="city" path="city">
 								<option ${cityTP}>台北市</option>
 								<option ${cityTC}>台中市</option>
 								<option ${cityHZ}>新竹市</option>
-							</select> <br> <label>名稱:</label><input type="text" name="envName"
-								value='${envDetail.name.trim()}'> <br> <label>請選擇寵物類別:</label>
-							<input type="checkbox" name="animalTypes" value="狗" ${dogChecked} />狗
-							<input type="checkbox" name="animalTypes" value="貓" ${catChecked} />貓
-							<br> <label>環境類別:</label> <input type="radio" name="envType"
-								value="寵物住宿" ${envTypeL} />寵物住宿 <input type="radio"
-								name="envType" value="寵物餐廳" ${envTypeR} />寵物餐廳 <input
-								type="radio" name="envType" value="寵物美容" ${envTypeB} />寵物美容 <br>
-							<label>電話:</label> <input type="text" name="envTel"
-								value='${envDetail.telephone.trim()}'> <br> <label>地址:</label>
-							<input type="text" name="envAdd"
-								value='${envDetail.address.trim()}' size="38">
+							</form:select>
+							<br> <label>名稱:</label>
+							<form:input type="text" path="name" />
+							<br> <label>請選擇寵物類別:</label>
+							<form:checkbox path="animalTypesArr" value="狗" />
+							狗
+							<form:checkbox path="animalTypesArr" value="貓" />
+							貓 <br> <label>環境類別:</label>
+							<form:radiobutton path="envTypes" value="寵物住宿" />
+							寵物住宿
+							<form:radiobutton path="envTypes" value="寵物餐廳" />
+							寵物餐廳
+							<form:radiobutton path="envTypes" value="寵物美容" />
+							寵物美容 <br> <label>電話:</label>
+							<form:input type="text" path="telephone" />
+							<br> <label>地址:</label>
+							<form:input type="text" path="address" size="38" />
+							<br>
+							<form:input path="friendlyEnvImage" type="file" />
+							<form:errors path="friendlyEnvImage" cssClass="error" />
 							<div>
+								<img src="data:image/jpg;base64,${photo}" width="400"
+									height="300" />
+							</div>
+							<div>
+							
 								<input type="submit" value="確定修改" />
 							</div>
 						</fieldset>
-					</form>
+					</form:form>
 					<br>
 					<div>
 						<button id="editBtn">編輯資料</button>
@@ -136,7 +148,7 @@
 					<form action="FriendlyEnvSearch">
 						<input type="submit" value="回寵物友善搜尋">
 					</form>
-					
+
 					<br>
 
 				</div>
@@ -254,9 +266,7 @@
 
 	<script src="js/vendor/jquery-2.2.4.min.js"></script>
 	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-		crossorigin="anonymous"></script>
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script src="js/vendor/bootstrap.min.js"></script>
 	<script
 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>

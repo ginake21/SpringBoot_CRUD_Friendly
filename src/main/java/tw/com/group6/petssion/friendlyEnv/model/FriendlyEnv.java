@@ -32,9 +32,13 @@ public class FriendlyEnv implements Serializable, Comparable<FriendlyEnv>{
 	private String telephone;
 	private String address;	 
 	private byte[] image;
+	private String fileName;
 	
 	@Transient
 	MultipartFile friendlyEnvImage;
+	
+	@Transient
+	private String[] animalTypesArr;
 	
 	
 	
@@ -136,13 +140,39 @@ public class FriendlyEnv implements Serializable, Comparable<FriendlyEnv>{
 		this.image = image;
 	}
 
+	public String[] getAnimalTypesArr() {
+		return animalTypesArr;
+	}
 
-	
+	public void setAnimalTypesArr(String[] animalTypesArr) {
+		this.animalTypesArr = animalTypesArr;
+	}
+
+
 	@Override
 	public String toString() {
 		return "FriendlyEnv [envId=" + envId + ", city=" + city + ", name=" + name + ", animalTypes=" + animalTypes
 				+ ", envTypes=" + envTypes + ", telephone=" + telephone + ", address=" + address + ", image="
 				+ Arrays.toString(image) + "]";
+	}
+
+	public MultipartFile getFriendlyEnvImage() {
+		return friendlyEnvImage;
+	}
+
+
+	public void setFriendlyEnvImage(MultipartFile friendlyEnvImage) {
+		this.friendlyEnvImage = friendlyEnvImage;
+	}
+
+
+	public String getFileName() {
+		return fileName;
+	}
+
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
 

@@ -26,6 +26,29 @@
 			document.getElementById("readOnly").removeAttribute("disabled");
 		}
 		;
+
+		document.getElementById('chosenFile').onchange = function(evt) {
+			var tgt = evt.target || window.event.srcElement, files = tgt.files;
+
+			// FileReader support
+			if (FileReader && files && files.length) {
+				var fr = new FileReader();
+				fr.onload = function() {
+					let myImage = document.getElementById("myimage");
+					let newImgFig = document.getElementById("newImgFig");
+					myImage.src = fr.result;
+					myImage.style.width="200px";
+					myImage.style.height="150px";
+					newImgFig.hidden=false;
+					newImgFig.style.marginLeft="10px";
+				}
+				fr.readAsDataURL(files[0]);
+			}
+			// Not supported
+			else {
+				alert("The file uploaded is not supported");
+			}
+		}
 	});
 </script>
 <link
@@ -102,7 +125,8 @@
 			<div class="framefriendly black">
 				<div class="content">
 					<br>
-					<form:form method="post" id="addNewEnv" class="black" modelAttribute="friendlyEnvU" enctype="multipart/form-data">
+					<form:form method="post" id="addNewEnv" class="black"
+						modelAttribute="friendlyEnvU" enctype="multipart/form-data">
 						<fieldset id="readOnly" disabled="disabled">
 							<label>所在城市:</label>
 							<form:select id="city" path="city">
@@ -127,14 +151,24 @@
 							<br> <label>地址:</label>
 							<form:input type="text" path="address" size="38" />
 							<br>
-							<form:input path="friendlyEnvImage" type="file" />
+							<form:input id="chosenFile" path="friendlyEnvImage" type="file" />
 							<form:errors path="friendlyEnvImage" cssClass="error" />
-							<div>
-								<img src="data:image/jpg;base64,${photo}" width="400"
-									height="300" />
+							<div class="d-flex">
+								<figure>
+									<img src="data:image/jpg;base64,${photo}" width="200"
+									height="150" />
+									<figcaption>原始圖檔</figcaption>
+								</figure>
+								<figure id="newImgFig" hidden="true">
+									<img id="myimage">
+									<figcaption>更新圖檔</figcaption>
+								</figure>
+
+
+								 
 							</div>
 							<div>
-							
+
 								<input type="submit" value="確定修改" />
 							</div>
 						</fieldset>
@@ -225,7 +259,7 @@
 								<div class="input-group">
 									<input type="text" class="form-control" name="EMAIL"
 										placeholder="請輸入你的電子郵件" onfocus="this.placeholder = ''"
-										onblur="this.placeholder = 'Enter Email Address '" required=""
+										onblur="this.placeholder = 'Enter Email Address '" required
 										type="email">
 									<div class="input-group-btn">
 										<button class="btn btn-default" type="submit">

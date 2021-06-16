@@ -40,20 +40,16 @@
 						<li><a href="courses.html">地圖交友</a></li>
 						<li><a href="events.html">興趣交友</a></li>
 						<li><a href="gallery.html">友善環境</a></li>
-						<li class="menu-has-children">
-							<a href="">部落格</a>
+						<li class="menu-has-children"><a href="">部落格</a>
 							<ul>
 								<li><a href="blog-home.html">部落格主頁</a></li>
 								<li><a href="blog-single.html">部落格分頁</a></li>
-							</ul>
-						</li>
-						<li class="menu-has-children">
-							<a href="">會員制度</a>
+							</ul></li>
+						<li class="menu-has-children"><a href="">會員制度</a>
 							<ul>
 								<li><a href="course-details.html">普通會員</a></li>
 								<li><a href="event-details.html">付費會員</a></li>
-							</ul>						
-						</li>
+							</ul></li>
 						<li><a href="contact.html">聯絡我們</a></li>
 					</ul>
 				</nav>
@@ -83,95 +79,64 @@
 	<!-- Start contact-page Area -->
 	<section class="contact-page-area">
 
-			<div class="row">
-				<div class="framefriendly">
-					<div class="content">
-					<br/>
-					<!--  
-						<div class="title1">
-						
-							<h1 style="color: orange;">寵物友善環境查詢</h1>
-						</div>
-					-->
-						<br />
-						<div>
-							<form id="idSearchForm" action="GetOrUpdateOneEnv" class="black">
-								查詢指定環境ID: <input type="text" name="envId"><input
-									type="submit">
-							</form>
-						</div>
-						<hr>
-						<br>
-
-						<div>
-							<form action="GetAllEnvs" class="black">
-								所有友善環境
-								<input type="submit" value="我想看" />
-							</form>
-						</div>
-						<br>
-						<hr>
-
-						<div>
-							<form action="GetFilteredEnvs" method="get" class="black">
-								<div>
-									<strong><label>依條件查詢</label></strong>
-								</div>
-								<label>請選擇您想查詢的城市:</label> <select id="citySearch"
-									name="citySearch">
-									<option>請選擇查詢城市</option>
-									<option>台北市</option>
-									<option>台中市</option>
-									<option>新竹市</option>
-								</select> <br> <label>請選擇寵物類別:</label> <input type="checkbox"
-									name="animalTypes" value="狗" />狗 <input type="checkbox"
-									name="animalTypes" value="貓" />貓
-
-								<div>
-									<input type="submit" value="提交查詢" />
-								</div>
-
-							</form>
-						</div>
-						<br>
-
-						<hr>
-
-						<div>
-							<form action="AddNewFriendlyEnv" method="get" class="black">
-								<div>
-									<strong><label>新增友善餐廳</label></strong>
-								</div>
-								<div>
-									<input type="submit" value="我要新增" />
-								</div>
-
-							</form>
-						</div>
-						<br>
-						<hr>
-						<div>
-							<form action="UploadTestImg" method="post"
-								enctype="multipart/form-data">
-								<div>
-									檔案上傳：<input type="file" name="myImage">
-								</div>
-								<div>
-									<input type="submit" value="上傳">
-								</div>
-							</form>
-						</div>
-						
-						<div>
-							<form action="GetImgServlet" class="black">
-								我要看照片
-								<input type="submit" value="給我照片" />
-							</form>
-						</div>
+		<div class="row">
+			<div class="framefriendly">
+				<div class="content">
+					<br>
+					<div>
+						<form id="idSearchForm" action="GetOrUpdateOneEnv" class="black">
+							查詢指定環境ID: <input type="text" name="envId"><input
+								type="submit">
+						</form>
 					</div>
-				</div>
+					<br>
+					
+					<hr>				
+					<div>
+						<form action="GetAllEnvs" class="black">
+							所有友善環境 <input type="submit" value="我想看" />
+						</form>
+					</div>
+					<br>
+					
+					<hr>
 
-		
+					<div>
+						<form action="AddNewFriendlyEnv" method="get" class="black">
+							新增友善餐廳 <input type="submit" value="我要新增" />
+						</form>
+					</div>
+					<br> 
+					<hr>
+
+					<div>
+						<form action="GetFilteredEnvs" method="get" class="black">
+							<div>
+								<strong><label>依條件查詢</label></strong>
+							</div>
+							<label>請選擇您想查詢的城市:</label> <select id="citySearch"
+								name="citySearch">
+								<option>請選擇查詢城市</option>
+								<option>台北市</option>
+								<option>台中市</option>
+								<option>新竹市</option>
+							</select> <br> <label>請選擇寵物類別:</label> <input type="checkbox"
+								name="animalTypes" value="狗" />狗 <input type="checkbox"
+								name="animalTypes" value="貓" />貓
+
+							<div>
+								<input type="submit" value="提交查詢" />
+							</div>
+
+						</form>
+					</div>
+					<br>
+					<hr>
+
+				</div>
+			</div>
+
+
 		</div>
 	</section>
 	<!-- End contact-page Area -->
@@ -274,7 +239,7 @@
 	<!-- End footer Area -->
 
 
-	<script src="js/vendor/jquery-2.2.4.min.js"></script>
+	<!--  <script src="js/vendor/jquery-2.2.4.min.js"></script>-->
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script src="js/vendor/bootstrap.min.js"></script>
@@ -293,120 +258,3 @@
 
 </body>
 </html>
-	<!-- Start contact-page Area -->
-<!--	
-	<section class="contact-page-area">
-
-			<div class="row">
-				<div class="framefriendly">
-					<div class="content">
-					<br/>
-						<br />
-						<div>
-							<form id="idSearchForm" action="GetOneEnv" class="black">
-								查詢指定環境ID: <input type="text" name="envId"><input
-									type="submit">
-							</form>
-							
-						</div>
-						<hr>
-						<br>
-
-						<div>
-							<form action="GetAllEnvs" class="black">
-								所有友善環境
-								<input type="submit" value="我想看" />
-							</form>
-						</div>
-						<br>
-						<hr>
-
-						<div>
-							<form action="GetFilteredEnvs" method="get" class="black">
-								<div>
-									<strong><label>依條件查詢</label></strong>
-								</div>
-								<label>請選擇您想查詢的城市:</label> <select id="citySearch"
-									name="citySearch">
-									<option>請選擇查詢城市</option>
-									<option>台北市</option>
-									<option>台中市</option>
-									<option>新竹市</option>
-								</select> <br> <label>請選擇寵物類別:</label> <input type="checkbox"
-									name="animalTypes" value="狗" />狗 <input type="checkbox"
-									name="animalTypes" value="貓" />貓
-
-								<div>
-									<input type="submit" value="提交查詢" />
-								</div>
-
-							</form>
-						</div>
-						<br>
-
-						<hr>
-
-						<div>
-						 
-							<form:form method="post" class="black" modelAttribute="friendlyEnv">
-								<div>
-									<strong><label>新增友善餐廳</label></strong>
-								</div>
-								<label>所在城市:</label> 
-								<form:select id="city" path="city">								
-									<form:option label="請挑選" value="-1" />
-									<form:options items="${cityList}" />
-								</form:select> <br> 
-								<label>名稱:</label>
-								<form:input type="text" path="name" />
-								<br> 
-								<label>請選擇寵物類別:</label> 
-								<form:input type="checkbox" path="animalTypes" value="狗" />狗 
-								<form:input type="checkbox" path="animalTypes" value="貓" />貓 <br> 
-								<label>環境類別:</label>
-								<form:input type="radio" path="envTypes" value="寵物住宿"/>寵物住宿 
-								<form:input	type="radio" path="envTypes" value="寵物餐廳" />寵物餐廳 
-								<form:input	type="radio" path="envTypes" value="寵物美容" />寵物美容 <br>
-
-								<label>電話:</label> 
-								<form:input type="text" path="telephone" /> <br>
-
-								<label>地址:</label> 
-								<form:input type="text" path="address" size="38" />
-
-								<div>
-									<input type="submit" value="建立資料" />
-								</div>
-							</form:form>
-							
-						</div>
-						<br>
-						<hr>
-						<div>
-							<form action="UploadTestImgServlet" method="post"
-								enctype="multipart/form-data">
-								<div>
-									檔案上傳：<input type="file" name="myImage">
-								</div>
-								<div>
-									<input type="submit" value="上傳">
-								</div>
-							</form>
-						</div>
-						
-						<div>
-							<form action="GetImgServlet" class="black">
-								我要看照片
-								<input type="submit" value="給我照片" />
-							</form>
-						</div>
-					</div>
-				</div>
-
-		
-		</div>
-	</section>
-	<!-- End contact-page Area -->
-
-
- 

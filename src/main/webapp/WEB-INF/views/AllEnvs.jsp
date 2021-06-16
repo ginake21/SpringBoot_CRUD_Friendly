@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <!-- 
 名字: Gina
@@ -11,6 +12,7 @@
 <head>
 <meta charset="UTF-8">
 <title>All Friendly Environment</title>
+
 <link href="resources/friendlyStyle.css" rel="stylesheet">
 <link
 	href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700"
@@ -49,10 +51,9 @@
 						<li class="menu-has-children"><a href="">會員制度</a>
 							<ul>
 								<li><a href="course-details.html">普通會員</a></li>
-								<li><a href="event-details.html">付費會員</a></li></li>
-					</ul>
-					</li>
-					<li><a href="contact.html">聯絡我們</a></li>
+								<li><a href="event-details.html">付費會員</a></li>
+							</ul></li>
+						<li><a href="contact.html">聯絡我們</a></li>
 					</ul>
 				</nav>
 				<!-- #nav-menu-container -->
@@ -69,8 +70,8 @@
 					<h1 class="text-white">友善環境列表</h1>
 					<p class="text-white link-nav">
 						<a href="index.html">首頁 </a> <span class="lnr lnr-arrow-right"></span><a
-							href="blog-home.html">友善環境列表</a> <span class="lnr lnr-arrow-right"></span>
-						<a href="blog-single.html">查詢首頁</a>
+							href="blog-home.html">友善環境列表</a> <span
+							class="lnr lnr-arrow-right"></span> <a href="blog-single.html">查詢首頁</a>
 					</p>
 				</div>
 			</div>
@@ -80,52 +81,60 @@
 
 	<!-- Start contact-page Area -->
 	<section class="contact-page-area">
-	
-			<div class="row">
-				<div class="framefriendly">
-					<div class="content">
-					</br>
-						<table border="1">
+		<div class="row">
+			<div class="framefriendly">
+				<div class="content">
+				<P id="msg" align="center" style="color:red; font-size:20px; font-weight: bold; margin-top: 10px">${SUCCESS}</P>
+					<br>
+					<table border="1">
+						<tr>
+							<th>友善店家id</th>
+							<th>城市</th>
+							<th>店家名稱</th>
+							<th>寵物種類</th>
+							<th>環境類別</th>
+							<th>電話</th>
+							<th>地址</th>
+							<th>更多資料</th>
+							<th>刪除</th>
+						</tr>
+						<c:forEach items="${allEnvs}" begin="0" end="${allEnvs.size()}"
+							var="env">
 							<tr>
-								<th>友善店家id</th>
-								<th>城市</th>
-								<th>店家名稱</th>
-								<th>寵物種類</th>
-								<th>環境類別</th>
-								<th>電話</th>
-								<th>地址</th>
-								<th>更多資料</th>
-								<th>刪除</th>
+								<td>${env.envId}</td>
+								<td>${env.city}</td>
+								<td>${env.name}</td>
+								<td>${env.animalTypes}</td>
+								<td>${env.envTypes}</td>
+								<td>${env.telephone}</td>
+								<td>${env.address}</td>
+
+								<td><a href="GetOrUpdateOneEnv?envId=${env.envId}"><button>詳細資料</button></a></td>
+								<!-- <td><a href="DeleteFriendlyEnv?envId=${env.envId}"><button>刪除</button></a></td> 
+									<form:form method='POST'>
+										<input type="hidden" name="noname"  id='putOrDelete'   value="" >
+										<td><button id="clickBtn" onclick="return confirmDelete('${env.envId}');">刪除</button></a></td>
+									</form:form>-->
+
+								<form:form action="DeleteFriendlyEnv/${env.envId}" method="POST">
+									<td><input type="hidden" name="_method" value="DELETE"><button>刪除</button></td>
+								</form:form>
+
 							</tr>
-							<c:forEach items="${allEnvs}" begin="0" end="${allEnvs.size()}"
-								var="env">
-								<tr>
-									<td>${env.envId}</td>
-									<td>${env.city}</td>
-									<td>${env.name}</td>
-									<td>${env.animalTypes}</td>
-									<td>${env.envTypes}</td>
-									<td>${env.telephone}</td>
-									<td>${env.address}</td>
-
-									<td><a href="GetOrUpdateOneEnv?envId=${env.envId}"><button>詳細資料</button></a></td>
-									<td><a href="DeleteFriendlyEnv?envId=${env.envId}"><button>刪除</button></a></td>
-
-								</tr>
-							</c:forEach>
-						</table>
-						</br>
-						<div>
-							<form action="FriendlyEnvSearch">
-								<input type="submit" value="回寵物友善搜尋">
-							</form>
-						</div>
-						</br>
+						</c:forEach>
+					</table>
+					<br>
+					<div>
+						<form action="FriendlyEnvSearch">
+							<input type="submit" value="回寵物友善搜尋">
+						</form>
 					</div>
+					<br>
 				</div>
-
 			</div>
-	
+
+		</div>
+
 	</section>
 	<!-- End contact-page Area -->
 
@@ -227,11 +236,9 @@
 	<!-- End footer Area -->
 
 
-	<script src="js/vendor/jquery-2.2.4.min.js"></script>
+	<!-- <script src="js/vendor/jquery-2.2.4.min.js"></script> -->
 	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-		crossorigin="anonymous"></script>
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script src="js/vendor/bootstrap.min.js"></script>
 	<script
 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>

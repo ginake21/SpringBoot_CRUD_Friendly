@@ -1,10 +1,11 @@
 package tw.com.group6.petssion.friendlyEnv.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,21 +61,21 @@ public class FriendlyEnvServiceIml implements FriendlyEnvService {
 	@Override
 	public List<FriendlyEnv> getEnvByCityAndATypes(String city, String animalTypes) {
 		List<FriendlyEnv> list1 = new ArrayList<>();
-		List<FriendlyEnv> list2 = new ArrayList<>();
-		String[] animalT = animalTypes.split(",");
+		String[] animalT = animalTypes.split(",");	
+		
 		if (animalT.length > 1) {
-			list2 = friendlyEnvDao.findByCityAndAnimalTypes(city, animalTypes);
+			list1 = friendlyEnvDao.findByCityAndAnimalTypes(city, animalTypes);
 		} else {
 			for (int i = 0; i < animalT.length; i++) {
-				list1 = friendlyEnvDao.findByCityAndAnimalTypes(city, animalT[i]);
-				list2.addAll(list1);
+				list1.addAll(friendlyEnvDao.findByCityAndAnimalTypes(city, animalT[i]));
 			}
 		}
 
-		System.out.println("listSize in Service: " + list2.size());
-		Set<FriendlyEnv> set = new HashSet<>(list2);
-		System.out.println("SET SIZE: " + set.size());
-		return new ArrayList<>(set);
+		Set<FriendlyEnv> set = new TreeSet<>(list1);
+		List<FriendlyEnv> finalList = new ArrayList<>(set);
+//		Collections.sort(finalList);
+//		return new ArrayList<>(finalList);
+		return finalList;
 	}
 
 	@Override

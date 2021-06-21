@@ -179,7 +179,7 @@ public class FriendlyEnv implements Serializable, Comparable<FriendlyEnv>{
 	@Override
 	public int compareTo(FriendlyEnv o) {
 		// TODO Auto-generated method stub
-		return 0;
+		return this.envId - o.envId;
 	}
 
 

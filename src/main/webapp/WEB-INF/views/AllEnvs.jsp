@@ -12,7 +12,31 @@
 <head>
 <meta charset="UTF-8">
 <title>All Friendly Environment</title>
+<script>
+	window.onload=function(){
+		let role = '${userRole}'
+		
+		checkRole()
+		
+		function checkRole() {
+			let role = '${userRole}'
+			if (role == "admin") {
+				alert("it's role admin")
+				var adminClass = document.querySelectorAll(".roleGeneral")
+				for (i = 0; i < adminClass.length; i++) {
+					adminClass[i].hidden = true
+				}
+			} else {
+				//document.getElementById("editBtn").setAttribute("disabled", "")
+				var adminClass = document.querySelectorAll(".roleAdmin")
+				for (i = 0; i < adminClass.length; i++) {
+					adminClass[i].hidden = true
+				}
+			}
+		}
+	}
 
+</script>
 <link href="resources/friendlyStyle.css" rel="stylesheet">
 <link
 	href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700"
@@ -95,8 +119,8 @@
 							<th>環境類別</th>
 							<th>電話</th>
 							<th>地址</th>
-							<th>更多資料</th>
-							<th>刪除</th>
+							<th class="roleAdmin">更多資料</th>
+							<th class="roleAdmin">刪除</th>
 						</tr>
 						<c:forEach items="${allEnvs}" begin="0" end="${allEnvs.size()}"
 							var="env">
@@ -109,24 +133,29 @@
 								<td>${env.telephone}</td>
 								<td>${env.address}</td>
 
-								<td><a href="GetOrUpdateOneEnv?envId=${env.envId}"><button>詳細資料</button></a></td>
-								<!-- <td><a href="DeleteFriendlyEnv?envId=${env.envId}"><button>刪除</button></a></td> 
-									<form:form method='POST'>
-										<input type="hidden" name="noname"  id='putOrDelete'   value="" >
-										<td><button id="clickBtn" onclick="return confirmDelete('${env.envId}');">刪除</button></a></td>
-									</form:form>-->
 
-								<form:form action="DeleteFriendlyEnv/${env.envId}" method="POST">
-									<td><input type="hidden" name="_method" value="DELETE"><button>刪除</button></td>
-								</form:form>
+								<td class="roleAdmin"><a href="<c:url value='/GetOrUpdateOneEnv?envId=${env.envId}' />"><button>詳細資料</button></a></td>
+
+								<!-- You can't use a tag inside a tag -->
+								<td class="roleAdmin">
+								<c:url var="del_url"  value="/DeleteFriendlyEnv/${env.envId}" />
+								<form:form action="${del_url}" method="POST">
+									<input type="hidden" name="_method" value="DELETE"><button>刪除</button>
+								</form:form></td>
 
 							</tr>
 						</c:forEach>
 					</table>
 					<br>
 					<div>
-						<form action="FriendlyEnvSearch">
-							<input type="submit" value="回寵物友善搜尋">
+					<div class="d-flex">
+						<form class="roleAdmin"
+							action="<c:url value='/FriendlyEnvSearch' />">
+							<input type="submit" value="回寵物友善環境(b)">
+						</form>
+						<form class="roleGeneral"
+							action="<c:url value='/FriendlyEnvSearchFR' />">
+							<input type="submit" value="回寵物友善環境(f)">
 						</form>
 					</div>
 					<br>

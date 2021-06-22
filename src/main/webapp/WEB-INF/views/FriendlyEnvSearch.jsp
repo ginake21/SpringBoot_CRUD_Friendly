@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!-- 
 名字: Gina
 日期: 2021/05/01
@@ -9,6 +10,31 @@
 <head>
 <meta charset="UTF-8">
 <title>友善搜尋</title>
+<script>
+	window.onload=function(){
+		let role = '${userRole}'
+		
+		checkRole()
+		
+		function checkRole() {
+			let role = '${userRole}'
+			if (role == "admin") {
+				alert("it's role admin")
+				var adminClass = document.querySelectorAll(".roleGeneral")
+				for (i = 0; i < adminClass.length; i++) {
+					adminClass[i].hidden = true
+				}
+			} else {
+				//document.getElementById("editBtn").setAttribute("disabled", "")
+				var adminClass = document.querySelectorAll(".roleAdmin")
+				for (i = 0; i < adminClass.length; i++) {
+					adminClass[i].hidden = true
+				}
+			}
+		}
+	}
+
+</script>
 <link href="resources/friendlyStyle.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <link
@@ -84,7 +110,7 @@
 				<div class="content">
 					<br>
 					<div>
-						<form id="idSearchForm" action="GetOrUpdateOneEnv" class="black">
+						<form id="idSearchForm" action="<c:url value='/GetOrUpdateOneEnv' />" class="black">
 							查詢指定環境ID: <input type="text" name="envId"><input
 								type="submit">
 						</form>
@@ -93,24 +119,24 @@
 					
 					<hr>				
 					<div>
-						<form action="GetAllEnvs" class="black">
+						<form action="<c:url value='/GetAllEnvs' />" class="black">
 							所有友善環境 <input type="submit" value="我想看" />
 						</form>
 					</div>
 					<br>
 					
-					<hr>
+					<hr class="roleAdmin">
 
-					<div>
-						<form action="AddNewFriendlyEnv" method="get" class="black">
+					<div class="roleAdmin">
+						<form action="<c:url value='/AddNewFriendlyEnv' />" method="get" class="black">
 							新增友善餐廳 <input type="submit" value="我要新增" />
 						</form>
 					</div>
-					<br> 
+					<br class="roleAdmin"> 
 					<hr>
 
 					<div>
-						<form action="GetFilteredEnvs" method="get" class="black">
+						<form action="<c:url value='/GetFilteredEnvs' />" method="get" class="black">
 							<div>
 								<strong><label>依條件查詢</label></strong>
 							</div>

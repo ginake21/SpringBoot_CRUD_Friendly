@@ -46,7 +46,6 @@
 </head>
 <body>
 	<div>
-
 		<form:form method="post" id="addNewEnv" class="black"
 			modelAttribute="friendlyEnv" enctype="multipart/form-data">
 			<input id="PageContext" type="hidden" value='${pageContext.request.contextPath}' />
@@ -94,7 +93,8 @@
 	</div>
 
 	<br>
-	<form action="FriendlyEnvSearch">
+	
+	<form action="<c:url value='/FriendlyEnvSearch' />">
 		<input type="submit" value="回寵物友善搜尋">
 	</form>
 	<br>

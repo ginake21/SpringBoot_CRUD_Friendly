@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -26,38 +27,48 @@ import tw.com.group6.petssion.friendlyEnv.model.FriendlyEnv;
 import tw.com.group6.petssion.friendlyEnv.service.FriendlyEnvService;
 
 @Controller
+@SessionAttributes({ "userRole" })
 public class FriendlyController {
 
 	@Autowired
 	FriendlyEnvService service;
-	
+
 	@Autowired
 	ServletContext servletContext;
 
-	@GetMapping({ "/" })
+	@GetMapping({ "/FriendlyEnv" })
 	public String home() {
-		return "index";
+		return "friendlyEnv";
 	}
 
 	@GetMapping("/FriendlyEnvSearch")
 	public ModelAndView friendlyEnvSearchHome() {
 		ModelAndView mv = new ModelAndView("FriendlyEnvSearch");
+		mv.addObject("userRole", "admin");
+		return mv;
+	}
+	
+	@GetMapping("/FriendlyEnvSearchFR")
+	public ModelAndView friendlyEnvSearchHomeFR() {
+		ModelAndView mv = new ModelAndView("FriendlyEnvSearch");
+		mv.addObject("userRole", "general");
 		return mv;
 	}
 
 	@GetMapping("/GetOrUpdateOneEnv")
-	public ModelAndView getOneFriendlyEnv(@RequestParam String envId, @ModelAttribute("friendlyEnvU") FriendlyEnv friendlyEnvU) {
+	public ModelAndView getOneFriendlyEnv(@RequestParam String envId,
+			@ModelAttribute("friendlyEnvU") FriendlyEnv friendlyEnvU) {
 		ModelAndView mv = new ModelAndView("envDetail");
 		FriendlyEnv friendlyEnv = service.get(Integer.valueOf(envId));
 		InputStream is = null;
-		if(friendlyEnv.getImage()!=null) {
+		if (friendlyEnv.getImage() != null) {
 			is = new ByteArrayInputStream(friendlyEnv.getImage());
-		}else {
+		} else {
 			is = getDefaultPhoto();
 		}
-		
+
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		
+
 		int length;
 		try {
 			length = is.available();
@@ -69,20 +80,20 @@ public class FriendlyController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		byte[] imageBytes = outputStream.toByteArray();
-		String base64Image = Base64.getEncoder().encodeToString(imageBytes);	
-		
+		String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
 		String[] typesArr = friendlyEnv.getAnimalTypes().split(",");
-		for(int i = 0; i < typesArr.length; i++) {
+		for (int i = 0; i < typesArr.length; i++) {
 			typesArr[i] = typesArr[i].trim();
 		}
-		
+
 		friendlyEnvU.setName(friendlyEnv.getName());
 		friendlyEnvU.setAnimalTypesArr(typesArr);
-		
+
 		friendlyEnvU.setEnvTypes(friendlyEnv.getEnvTypes().trim());
-		
+
 		friendlyEnvU.setTelephone(friendlyEnv.getTelephone());
 		friendlyEnvU.setAddress(friendlyEnv.getAddress());
 
@@ -94,33 +105,6 @@ public class FriendlyController {
 		String cityTC = "";
 		String cityHZ = "";
 
-//		switch (friendlyEnv.getEnvTypes().trim()) {
-//		case ("寵物住宿"):
-//			envTypeL = "checked";
-//			break;
-//		case ("寵物餐廳"):
-//			envTypeR = "checked";
-//			break;
-//		case ("寵物美容"):
-//			envTypeB = "checked";
-//			break;
-//		}
-//
-//		switch (friendlyEnv.getCity().trim()) {
-//		case ("台北市"):
-//			cityTP = "selected";
-//			break;
-//		case ("台中市"):
-//			cityTC = "selected";
-//			break;
-//		case ("新竹市"):
-//			cityHZ = "selected";
-//			break;
-//		}
-   		
-//		mv.addObject("envDetail", friendlyEnv);
-//		mv.addObject("dogChecked", friendlyEnv.getAnimalTypes().contains("狗") ? "checked" : "");
-//		mv.addObject("catChecked", friendlyEnv.getAnimalTypes().contains("貓") ? "checked" : "");
 		mv.addObject("envTypeL", envTypeL);
 		mv.addObject("envTypeR", envTypeR);
 		mv.addObject("envTypeB", envTypeB);
@@ -153,36 +137,44 @@ public class FriendlyController {
 	}
 
 	@GetMapping("/AddNewFriendlyEnv")
-	public ModelAndView addNewFriendlyEnvG() {
-		ModelAndView mv = new ModelAndView("addNewFriendlyEnv");
-		FriendlyEnv friendlyEnv = new FriendlyEnv();
-		mv.addObject("friendlyEnv", friendlyEnv);
-		return mv;
+	public ModelAndView addNewFriendlyEnvG(Model model) {
+		System.out.println("User Role===> " + model.getAttribute("userRole"));
+		if (model.getAttribute("userRole").equals("admin")) {
+			ModelAndView mv = new ModelAndView("addNewFriendlyEnv");
+			FriendlyEnv friendlyEnv = new FriendlyEnv();
+			mv.addObject("friendlyEnv", friendlyEnv);
+			return mv;
+		}
+		return getAllFriendlyEnv();
 	}
 
 	@PostMapping("/AddNewFriendlyEnv")
 	public String addNewFriendlyEnvP(@ModelAttribute("friendlyEnv") FriendlyEnv friendlyEnv, BindingResult result,
 			Model model, RedirectAttributes redirectAttributes) {
-		
-		String imageOriginalFilename = friendlyEnv.getFriendlyEnvImage().getOriginalFilename();
-		friendlyEnv.setFileName(imageOriginalFilename);
-		
-		byte[] coverImage=null;
-		try {
-			coverImage = friendlyEnv.getFriendlyEnvImage().getBytes();
-		} catch (IOException e) {
-			e.printStackTrace();
+
+		System.out.println("User Role===> " + model.getAttribute("userRole"));
+		if (model.getAttribute("userRole").equals("admin")) {
+			String imageOriginalFilename = friendlyEnv.getFriendlyEnvImage().getOriginalFilename();
+			friendlyEnv.setFileName(imageOriginalFilename);
+
+			byte[] coverImage = null;
+			try {
+				coverImage = friendlyEnv.getFriendlyEnvImage().getBytes();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			friendlyEnv.setImage(coverImage);
+
+			service.save(friendlyEnv);
+
+			// TODO need add the feature
+			redirectAttributes.addFlashAttribute("SUCCESS", "新增成功!!!");
+
+			return "redirect:/GetAllEnvs";
 		}
-		friendlyEnv.setImage(coverImage);
-				
-		service.save(friendlyEnv);
-		
-		//TODO need add the feature
-		redirectAttributes.addFlashAttribute("SUCCESS", "新增成功!!!");
 
 		return "redirect:/GetAllEnvs";
-		
-		
+
 //		BookValidator  validator = new BookValidator();
 //		validator.validate(bean, result);
 //		if (result.hasErrors()) {
@@ -191,35 +183,41 @@ public class FriendlyController {
 //		}
 
 	}
-	
 
-	
 	@PostMapping("/GetOrUpdateOneEnv")
-	public String updateFriendlyEnvP(@ModelAttribute("friendlyEnvU") FriendlyEnv friendlyEnv, BindingResult result,
-			Model model, RedirectAttributes redirectAttributes) {
+	public String updateFriendlyEnvP(@RequestParam String envId,
+			@ModelAttribute("friendlyEnvU") FriendlyEnv friendlyEnv, BindingResult result, Model model,
+			RedirectAttributes redirectAttributes) {
+		System.out.println("ID====> " + envId);
+		System.out.println("FriendlyEnv IMAGE====> " + friendlyEnv.getFriendlyEnvImage().isEmpty());
+		System.out
+				.println("FriendlyEnv  original name====> " + friendlyEnv.getFriendlyEnvImage().getOriginalFilename());
 		
-		System.out.println("animalTypesArr=====> "+friendlyEnv.getAnimalTypesArr());
-		System.out.println("animalTypes=====> "+friendlyEnv.getAnimalTypes());
-		friendlyEnv.setAnimalTypes(String.join(",", friendlyEnv.getAnimalTypesArr()));
-		String imageOriginalFilename = friendlyEnv.getFriendlyEnvImage().getOriginalFilename();
-		friendlyEnv.setFileName(imageOriginalFilename);
-		
-		byte[] coverImage=null;
-		try {
-			coverImage = friendlyEnv.getFriendlyEnvImage().getBytes();
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (model.getAttribute("userRole").equals("admin")) {
+			friendlyEnv.setAnimalTypes(String.join(",", friendlyEnv.getAnimalTypesArr()));
+			if (!friendlyEnv.getFriendlyEnvImage().getOriginalFilename().isEmpty()) {
+				String imageOriginalFilename = friendlyEnv.getFriendlyEnvImage().getOriginalFilename();
+				friendlyEnv.setFileName(imageOriginalFilename);
+				byte[] coverImage = null;
+				try {
+					coverImage = friendlyEnv.getFriendlyEnvImage().getBytes();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				friendlyEnv.setImage(coverImage);
+			} else {
+				friendlyEnv.setImage(service.get(Integer.valueOf(envId)).getImage());
+				friendlyEnv.setFileName(service.get(Integer.valueOf(envId)).getFileName());
+			}
+
+			service.save(friendlyEnv);
+
+			// TODO need add the feature
+			redirectAttributes.addFlashAttribute("SUCCESS", "新增成功!!!");
 		}
-		friendlyEnv.setImage(coverImage);
-				
-		service.save(friendlyEnv);
-		
-		//TODO need add the feature
-		redirectAttributes.addFlashAttribute("SUCCESS", "新增成功!!!");
 
 		return "redirect:/GetAllEnvs";
-		
-		
+
 //		BookValidator  validator = new BookValidator();
 //		validator.validate(bean, result);
 //		if (result.hasErrors()) {
@@ -228,29 +226,25 @@ public class FriendlyController {
 //		}
 
 	}
-	
-	@DeleteMapping("/DeleteFriendlyEnv/{id}")
-	public String deleteFriendEnv(@PathVariable("id") Integer envId, RedirectAttributes redirectAttributes ) {
-		service.delete(Integer.valueOf(envId));
-		
-		//TODO need add the feature
-		redirectAttributes.addFlashAttribute("SUCCESS", "刪除成功!!!");
 
+	@DeleteMapping("/DeleteFriendlyEnv/{id}")
+	public String deleteFriendEnv(@PathVariable("id") Integer envId, RedirectAttributes redirectAttributes, Model model) {
+		if (model.getAttribute("userRole").equals("admin")) {
+			service.delete(Integer.valueOf(envId));
+			redirectAttributes.addFlashAttribute("SUCCESS", "刪除成功!!!");
+		}
 		return "redirect:/GetAllEnvs";
 	}
-	
+
 	public InputStream getDefaultPhoto() {
-		String fileName = "NoImage.jpg" ; 
-		InputStream is = servletContext.getResourceAsStream(
-				"/images/" + fileName);
+		String fileName = "NoImage.jpg";
+		InputStream is = servletContext.getResourceAsStream("/images/" + fileName);
 		return is;
 	}
 
 	@ModelAttribute()
-	public  void getDistincCities(Model model) {
+	public void getDistincCities(Model model) {
 		model.addAttribute("citylist", service.getCityList());
 	}
-	
-	
 
 }

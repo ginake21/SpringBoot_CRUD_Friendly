@@ -30,11 +30,16 @@
 		<div class="row">
 			<div class="framefriendly">
 				<div class="content">
-					<br /> <br />
+					<br> <br>
 					<div>
-						<form id="friendlyEnvSearch" action="FriendlyEnvSearch" class="black">
-							Test: <input
-								type="submit">
+						<form id="friendlyEnvSearch"
+							action="<c:url value='/FriendlyEnvSearch' />" class="black">
+							FriendlyBK: <input type="submit">
+						</form>
+						<hr>
+						<form id="friendlyFR" action="<c:url value='/FriendlyEnvSearchFR' />"
+							class="black">
+							FriendlyFR: <input type="submit">
 						</form>
 					</div>
 				</div>
